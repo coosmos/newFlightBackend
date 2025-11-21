@@ -1,30 +1,22 @@
 package com.app.entity;
 
-import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
-@MappedSuperclass
-public class BaseEntity {
+
+@Getter
+@Setter
+public abstract class BaseEntity {
+
     @CreatedDate
-    @Column(name="created_At", nullable=false, updatable=false)
+    @Field("created_at")
     private LocalDateTime createdAt;
+
     @LastModifiedDate
-    @Column(name="updated_At", nullable=false, updatable=false)
+    @Field("updated_at")
     private LocalDateTime updatedAt;
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-
-    }
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-
-    }
-
-
 }

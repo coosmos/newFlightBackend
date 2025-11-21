@@ -7,14 +7,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@Document(collection = "airlines")
-public class Airline {
+@Document(collection = "passengers")
+public class Passenger {
 
     @Id
     private String id;
 
-    private String airlineCode;
-    private String airlineName;
-    private String contactNumber;
-    private Boolean isActive = true;
+    private String name;
+    private String email;
+    private String phone;
 }

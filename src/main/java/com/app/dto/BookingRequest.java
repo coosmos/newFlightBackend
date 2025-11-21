@@ -24,5 +24,5 @@ public class BookingRequest {
     @NotNull(message = "Passengers list is required")
     @Size(min = 1, max = 9, message = "Booking must have between 1 and 9 passengers")
     @Valid
-    private List<Passenger> passengers;
+    private List<PassengerRequest> passengers;
 }

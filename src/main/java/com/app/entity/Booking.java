@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,14 +16,17 @@ public class Booking {
 
     @Id
     private String id;
-
-    private String flightId;
-    private String passengerId;
-
+    private String pnr;
+    private String flightId; //reference to flightTable
     private Integer seatsBooked;
-    private BigDecimal totalPrice;
+    private String email;
+    private List<Passenger> passengers;
 
     private LocalDateTime bookingTime = LocalDateTime.now();
 
-    private String status = "CONFIRMED"; // or CANCELLED
+    private BookingStatus status = BookingStatus.CONFIRMED;
+
+    public enum  BookingStatus {
+        CONFIRMED,  CANCELLED
+    }
 }

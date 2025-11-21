@@ -12,8 +12,9 @@ public class Passenger {
 
     @Id
     private String id;
-
+    private String bookingId;
     private String name;
     private String email;
     private String phone;
+    private String seatNumber;
 }

@@ -1,23 +1,27 @@
 package com.app.entity;
 
+import com.app.dto.BookingResponse;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "bookings")
-public class Booking {
+public class Booking extends BaseEntity {
 
     @Id
     private String id;
     private String pnr;
-    private String flightId; //reference to flightTable
+    private String flightId;
     private Integer seatsBooked;
     private String email;
     private List<Passenger> passengers;
@@ -26,7 +30,7 @@ public class Booking {
 
     private BookingStatus status = BookingStatus.CONFIRMED;
 
-    public enum  BookingStatus {
+    public enum BookingStatus {
         CONFIRMED,  CANCELLED
     }
 }

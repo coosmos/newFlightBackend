@@ -23,8 +23,6 @@ public class FlightSearchRequest {
     private LocalDate travelDate;
 
     @NotNull(message = "Number of passengers is required")
-    @Min(value = 1, message = "At least 1 passenger is required")
-    @Max(value = 9, message = "Maximum 9 passengers allowed")
     private Integer numberOfPassengers;
 
     private Boolean isRoundTrip = false;

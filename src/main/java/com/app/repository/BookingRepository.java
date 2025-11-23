@@ -12,7 +12,6 @@ public interface BookingRepository extends ReactiveMongoRepository<Booking, Stri
 
     Flux<Booking> findByFlightId(String flightId);
     Flux<Booking> findByEmail(String email);
-
     Mono<Booking> findByPnr(String pnr);
 
     Flux<Booking> findByEmailOrderByCreatedAtDesc(String email);

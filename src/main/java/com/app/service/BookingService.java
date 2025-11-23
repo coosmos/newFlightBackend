@@ -10,6 +10,7 @@ import com.app.entity.Passenger;
 import com.app.repository.BookingRepository;
 import com.app.repository.FlightRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -39,7 +40,13 @@ public class BookingService {
 
     private Mono<BookingResponse> processBooking(Flight flight, String flightId, BookingRequest request) {
         int seatCount = request.getPassengers().size();
+
+         // --validate seat count --TODO
+          if(flight.getTotalSeats()< request.getPassengers().size()) {
+              throw new RuntimeException("No available seats");
+          }
         int newAvailableSeats = flight.getAvailableSeats() - seatCount;
+
         flight.setAvailableSeats(newAvailableSeats);
 
         return flightRepository.save(flight)
@@ -132,6 +139,17 @@ public class BookingService {
         return bookingRepository.findByEmailOrderByCreatedAtDesc(email)
                 .switchIfEmpty(Flux.empty())
                 .flatMap(this::mapBookingToResponse);
+    }
+
+    public Mono<ServerResponse> CancelBookingStatus(String email) {
+        // cancel booking -TODO
+        return bookingRepository.findByEmail(email)
+                .switchIfEmpty(Mono.error(new RuntimeException("No bookings found for this email")))
+                .flatMap(booking->{
+                    booking.setStatus(Booking.BookingStatus.CANCELLED);
+                    return bookingRepository.save(booking);
+                })
+                .then(ServerResponse.ok().bodyValue("success"));
     }
 
 }

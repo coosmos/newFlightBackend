@@ -30,7 +30,7 @@ public class BookingService {
     }
 
     public Mono<BookingResponse> createBooking(String flightId, BookingRequest request) {
-        flightId = flightId.trim();
+        flightId = flightId.trim();  //trim so extra line change charcter does not change the id
         String finalFlightId = flightId;
 
         return flightRepository.findById(finalFlightId)
@@ -41,7 +41,6 @@ public class BookingService {
     private Mono<BookingResponse> processBooking(Flight flight, String flightId, BookingRequest request) {
         int seatCount = request.getPassengers().size();
 
-         // --validate seat count --TODO
           if(flight.getTotalSeats()< request.getPassengers().size()) {
               throw new RuntimeException("No available seats");
           }
@@ -141,8 +140,8 @@ public class BookingService {
                 .flatMap(this::mapBookingToResponse);
     }
 
-    public Mono<ServerResponse> CancelBookingStatus(String email) {
-        // cancel booking -TODO
+    public Mono<ServerResponse> cancelBookingStatus(String email) {
+
         return bookingRepository.findByEmail(email)
                 .switchIfEmpty(Mono.error(new RuntimeException("No bookings found for this email")))
                 .flatMap(booking->{

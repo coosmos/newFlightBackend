@@ -4,7 +4,6 @@ import com.app.dto.BookingRequest;
 import com.app.dto.PassengerRequest;
 import com.app.entity.Booking;
 import com.app.entity.Flight;
-import com.app.entity.Passenger;
 import com.app.repository.BookingRepository;
 import com.app.repository.FlightRepository;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -183,7 +181,7 @@ class BookingServiceTest {
         when(bookingRepository.save(any()))
                 .thenReturn(Mono.just(booking));
 
-        StepVerifier.create(bookingService.CancelBookingStatus("test@test.com"))
+        StepVerifier.create(bookingService.cancelBookingStatus("test@test.com"))
                 .assertNext(res -> {})
                 .verifyComplete();
 
@@ -197,7 +195,7 @@ class BookingServiceTest {
         when(bookingRepository.findByEmail("xyz@mail.com"))
                 .thenReturn(Flux.empty());
 
-        StepVerifier.create(bookingService.CancelBookingStatus("xyz@mail.com"))
+        StepVerifier.create(bookingService.cancelBookingStatus("xyz@mail.com"))
                 .expectErrorMatches(e -> e.getMessage().contains("No bookings found"))
                 .verify();
     }

@@ -1,6 +1,5 @@
 package com.app.entity;
 
-import com.app.dto.BookingResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

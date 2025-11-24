@@ -1,6 +1,5 @@
 package com.app.dto;
 
-import com.app.entity.Passenger;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

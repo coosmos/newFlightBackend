@@ -13,7 +13,7 @@ public class AirlineRequest {
     @Size(min=2,max=5 , message="Airline code must be between 2 and 5 characters ")
     private String airlineCode;
     @NotBlank(message="Contact number is required ")
-    @Pattern(regexp = "^[0-9]{10}$", message="contact number must be 10 digits ")
+    @Pattern(regexp = "^\\d{10}$", message="contact number must be 10 digits ")
     private String contactNumber;
 
 }

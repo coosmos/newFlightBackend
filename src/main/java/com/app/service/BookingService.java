@@ -9,6 +9,7 @@ import com.app.entity.Flight;
 import com.app.entity.Passenger;
 import com.app.repository.BookingRepository;
 import com.app.repository.FlightRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
@@ -139,16 +140,15 @@ public class BookingService {
                 .switchIfEmpty(Flux.empty())
                 .flatMap(this::mapBookingToResponse);
     }
-
-    public Mono<ServerResponse> cancelBookingStatus(String email) {
-
-        return bookingRepository.findByEmail(email)
-                .switchIfEmpty(Mono.error(new RuntimeException("No bookings found for this email")))
-                .flatMap(booking->{
+    public Mono<ResponseEntity<String>> cancelBookingStatus(String pnr) {
+        return bookingRepository.findByPnr(pnr)
+                .switchIfEmpty(Mono.error(new RuntimeException("No booking found with this PNR")))
+                .flatMap(booking -> {
                     booking.setStatus(Booking.BookingStatus.CANCELLED);
                     return bookingRepository.save(booking);
                 })
-                .then(ServerResponse.ok().bodyValue("success"));
+                .thenReturn(ResponseEntity.ok("Booking cancelled successfully"));
     }
+
 
 }

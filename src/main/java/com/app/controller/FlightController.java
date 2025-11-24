@@ -4,7 +4,9 @@ import com.app.dto.FlightSearchRequest;
 import com.app.entity.Flight;
 import com.app.service.FlightService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,11 +21,13 @@ public class FlightController {
     }
 
     @PostMapping("/add")
-    public Mono<String> addFlight(
+    public Mono<ServerResponse> addFlight(
             @RequestParam String airlineCode,
             @RequestBody Flight flight) {
 
-        return flightService.addFlight(flight, airlineCode);
+        return flightService.addFlight(flight, airlineCode).flatMap(fl->{
+            return ServerResponse.status(HttpStatus.CREATED).build();
+        });
     }
 
     @PostMapping("/search")

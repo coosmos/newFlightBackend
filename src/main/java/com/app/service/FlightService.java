@@ -24,14 +24,13 @@ public class FlightService {
         this.airlineRepository = airlineRepository;
     }
 
-    public Mono<String> addFlight(Flight flight, String airlineCode) {
+    public Mono<Flight> addFlight(Flight flight, String airlineCode) {
 
         return airlineRepository.findByAirlineCode(airlineCode)
                 .switchIfEmpty(Mono.error(new RuntimeException("Airline not found")))
                 .flatMap(airline -> {
                     flight.setAirlineId(airline.getId());
-                    return flightRepository.save(flight)
-                            .map(saved -> saved.getAirlineId());
+                    return flightRepository.save(flight);
                 });
     }
 
@@ -59,6 +58,7 @@ public class FlightService {
     public Flux<Flight> getFlightsByAirline(String airlineCode) {
         return flightRepository.findByAirlineCode(airlineCode);
     }
+
 
 
 

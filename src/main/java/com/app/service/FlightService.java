@@ -52,11 +52,13 @@ public class FlightService {
     }
 
     public Flux<Flight> getAllFlights() {
-        return flightRepository.findAll();
+        return flightRepository.findAll()
+                .switchIfEmpty(Mono.error(new RuntimeException("Flights not found")));
     }
 
     public Flux<Flight> getFlightsByAirline(String airlineCode) {
-        return flightRepository.findByAirlineCode(airlineCode);
+        return flightRepository.findByAirlineCode(airlineCode)
+                .switchIfEmpty(Mono.error(new RuntimeException("No flights found for  this airline code")));
     }
 
 

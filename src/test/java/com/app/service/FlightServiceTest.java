@@ -53,7 +53,7 @@ class FlightServiceTest {
                 .expectNext(savedFlight)
                 .verifyComplete();
 
-        verify(airlineRepository, times(1)).findByAirlineCgitode("AI");
+        verify(airlineRepository, times(1)).findByAirlineCode("AI");
         verify(flightRepository, times(1)).save(flight);
     }
 

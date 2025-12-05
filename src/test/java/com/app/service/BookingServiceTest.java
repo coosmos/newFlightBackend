@@ -175,28 +175,30 @@ class BookingServiceTest {
 
         Booking booking = dummyBooking();
 
-        when(bookingRepository.findByEmail("test@test.com"))
-                .thenReturn(Flux.just(booking));
+        when(bookingRepository.findByPnr("PNR123"))
+                .thenReturn(Mono.just(booking));
 
         when(bookingRepository.save(any()))
                 .thenReturn(Mono.just(booking));
 
-        StepVerifier.create(bookingService.cancelBookingStatus("test@test.com"))
-                .assertNext(res -> {})
+        StepVerifier.create(bookingService.cancelBookingStatus("PNR123"))
+                .assertNext(res -> {})   // assert response if needed
                 .verifyComplete();
 
-        verify(bookingRepository, times(1)).findByEmail("test@test.com");
+        verify(bookingRepository, times(1)).findByPnr("PNR123");
         verify(bookingRepository, atLeastOnce()).save(any());
     }
+
 
     @Test
     void testCancelBookingStatus_noBookings() {
 
-        when(bookingRepository.findByEmail("xyz@mail.com"))
-                .thenReturn(Flux.empty());
+        when(bookingRepository.findByPnr("PNR999"))
+                .thenReturn(Mono.empty());
 
-        StepVerifier.create(bookingService.cancelBookingStatus("xyz@mail.com"))
-                .expectErrorMatches(e -> e.getMessage().contains("No bookings found"))
+        StepVerifier.create(bookingService.cancelBookingStatus("PNR999"))
+                .expectErrorMatches(e -> e.getMessage().contains("No booking found"))
                 .verify();
     }
+
 }
